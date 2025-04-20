@@ -23,18 +23,29 @@ export class AppComponent {
       this.selectedFile = input.files[0];
     }
   }
-  handleClick() {
+  async handleClick() {
     if (this.selectedFile) {
-      console.log(
-        uploadData({
-          data: this.selectedFile,
+      try {
+        const result = await uploadData({
           path: `picture-submissions/${this.selectedFile.name}`,
+          // Alternatively, path: ({identityId}) => `album/${identityId}/1.jpg`
+          data: this.selectedFile,
           options: {
-            // Specify a target bucket using name assigned in Amplify Backend
-            bucket: 'amplifyTeamDrive',
+            onProgress: ({ transferredBytes, totalBytes }) => {
+              if (totalBytes) {
+                console.log(
+                  `Upload progress ${Math.round(
+                    (transferredBytes / totalBytes) * 100
+                  )} %`
+                );
+              }
+            },
           },
-        })
-      );
+        }).result;
+        console.log("Path from Response: ", result.path);
+      } catch (error) {
+        console.log("Error : ", error);
+      }
     }
   }
 }
