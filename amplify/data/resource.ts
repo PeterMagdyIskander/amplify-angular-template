@@ -20,8 +20,8 @@ const schema = a.schema({
     description: a.string(),
     ownerName: a.string(), // Username of owner
     s3Key: a.string().required(), // S3 key for the video file
-    createdAt: a.datetime().required().default('now'),
-    updatedAt: a.datetime().required().default('now'),
+    createdAt: a.datetime().required(),
+  updatedAt: a.datetime().required(),
   }).authorization((allow) => [allow.publicApiKey()]),
 });
 
