@@ -22,7 +22,7 @@ const schema = a.schema({
     s3Key: a.string().required(), // S3 key for the video file
     createdAt: a.datetime().required().default('now'),
     updatedAt: a.datetime().required().default('now'),
-  }),
+  }).authorization((allow) => [allow.publicApiKey()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
